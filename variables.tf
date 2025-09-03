@@ -48,3 +48,33 @@ variable "hosted_zone_id"  {}
 variable "frontend_github_owner"    {}
 variable "frontend_github_repo"     {}
 variable "frontend_github_branch"   {}
+
+
+# backend
+variable "backend_aws_region"     { type = string }
+variable "backend_project_name"   { type = string } # 例如 dev / prod
+
+# GitHub（注意前缀 backend_）
+variable "backend_github_owner"   { type = string }
+variable "backend_github_repo"    { type = string }
+variable "backend_github_branch"  { type = string }
+
+# OIDC Provider 控制
+variable "backend_create_oidc_provider" {
+  type    = bool
+  default = true
+}
+variable "backend_existing_oidc_provider_arn" {
+  type    = string
+  default = ""
+}
+
+variable "backend_service_names" {
+  type    = list(string)
+  default = ["api-gateway","users-service","orders-service","inventory-service"]
+}
+
+variable "backend_ecr_repo_prefix" {
+  type    = string
+  default = "microshop"
+}

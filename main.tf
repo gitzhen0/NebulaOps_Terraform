@@ -83,3 +83,26 @@ module "frontend_static_site" {
   }
 
 }
+
+# backend
+module "backend_gha_ecr" {
+# 请替换为你的 modules 仓库地址与版本
+source = "git::https://github.com/gitzhen0/NebulaOps_Terraform_Modules.git//backend_gha_ecr_2?ref=main"
+
+backend_aws_region            = var.backend_aws_region
+backend_project_name          = var.backend_project_name
+
+backend_github_owner          = var.backend_github_owner
+backend_github_repo           = var.backend_github_repo
+backend_github_branch         = var.backend_github_branch
+
+# backend_create_oidc_provider  = var.backend_create_oidc_provider
+# backend_existing_oidc_provider_arn = var.backend_existing_oidc_provider_arn
+
+# 关键：不再创建 OIDC，直接复用前端模块创建的那个
+backend_create_oidc_provider        = false
+backend_existing_oidc_provider_arn  = module.frontend_static_site.github_oidc_provider_arn
+
+backend_service_names         = var.backend_service_names
+backend_ecr_repo_prefix       = var.backend_ecr_repo_prefix
+}
